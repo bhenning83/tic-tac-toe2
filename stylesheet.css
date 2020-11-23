@@ -2,3 +2,28 @@
   color: blue;
   text-transform: capitalize;
 }
+.square {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.board-wrap {
+  display: flex;
+  justify-content: center;
+}
+#board-container {
+  list-style: none;
+  display: flex;
+  width: 305px;
+  flex-wrap: wrap;
+}
+#square-1, #square-4, #square-7 {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+#square-3, #square-4, #square-5 {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}

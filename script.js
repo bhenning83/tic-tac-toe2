@@ -1,41 +1,25 @@
-const Gameboard = (function() {
+const GameBoard = (function() {
   let board = ["X", "O", "X", "O", "X", "O", "X", "O","X"];
 
   //cache DOM
-  let boardContainer = document.querySelector("#board-container");
+  squares = document.querySelectorAll(".square");
 
-  function createBoard() {
-    for (i = 0; i < board.length; i++) {
-      let square = document.createElement('li');
-      square.setAttribute("id", `square-${i}`);
-      square.setAttribute("class", "square");
-      boardContainer.appendChild(square)
-    }
-    render();
-  }
-  
   function render() {
-    let squares = Gameboard.boardContainer.getElementsByTagName("li");
-    squares = Array.prototype.slice.call( squares )
-    console.log(squares)
-    for (i = 0; i < board.length; i++) {
+    for (i = 0; i < squares.length; i++) {
       squares[i].innerText = board[i];
     }
   }
 
   return {
-    createBoard,
     render,
-    boardContainer,
-    board
+    board,
+    squares
   };
 })();
 
-const Player = (symbol) => {
+const Player = (marker) => {
 
-  //cache DOM
-  let squares = Gameboard.boardContainer.getElementsByTagName("li");
-  squares = Array.prototype.slice.call( squares )
+  squares = Array.prototype.slice.call( GameBoard.squares ); //turns HTML collection into array
 
   //bind events
   squares.forEach(square => {
@@ -44,19 +28,18 @@ const Player = (symbol) => {
 
   function playTurn() {
     id = Number(this.id.slice(-1)); //returns id number
-    Gameboard.board[id] = symbol;
-    console.log(symbol)
-    console.log(Gameboard.board)
-    Gameboard.render();
+    GameBoard.board[id] = marker;
+    GameBoard.render();
   }
 
   return {
     playTurn
   }
 };
-
 const GamePlay = (function() {
 
 })();
-Gameboard.createBoard()
+
+
+GameBoard.render();
 const b = Player("B");

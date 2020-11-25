@@ -9,6 +9,9 @@
   justify-content: center;
   align-items: center;
 }
+.square:hover {
+  cursor: pointer;
+}
 .board-wrap {
   display: flex;
   justify-content: center;
@@ -26,4 +29,7 @@
 #square-3, #square-4, #square-5 {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
+}
+.winner-box {
+  display: none;
 }

@@ -14,7 +14,16 @@ const GameBoard = (function() {
 })();
 
 const Player = (marker) => {
-  winning_combos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+  winning_combos = [
+    [0, 1, 2], 
+    [3, 4, 5], 
+    [6, 7, 8], 
+    [0, 3, 6], 
+    [1, 4, 7], 
+    [2, 5, 8], 
+    [0, 4, 8], 
+    [2, 4, 6]
+  ];
   let playLog = [];
   
   function checkForWinner() {
@@ -38,16 +47,23 @@ const Game = (function() {
 
   //Cache DOM
   winnerBox = document.querySelector(".winner-box");  
+  announcement = document.querySelector(".announcement");
+  playAgain = document.querySelector(".play-again")
   //Turns HTML collection into array
   squares = Array.prototype.slice.call( GameBoard.squares );
+
+  //Bind Events
+  playAgain.addEventListener("click", restart)
 
   function startGame() {
     squares.forEach(square => {
       square.addEventListener("click", playTurn) //adds listner to each square in grid
     });
     setConfig();
+    winnerBox.style.display = "none"
+    GameBoard.render();
   }
-  
+
   function setConfig() {
     player1 = Player("X")
     player2 = Player("O")
@@ -56,7 +72,6 @@ const Game = (function() {
 
   function playTurn() {
     player = config.currentPlayer; 
-    console.log(player)
     makePlay.bind(this)(); //binds selected square
     combo = player.checkForWinner();
     if (combo.length == 1) {
@@ -73,9 +88,9 @@ const Game = (function() {
     if (GameBoard.board[id] === "") { 
       GameBoard.board[id] = config.currentPlayer.marker;
       config.currentPlayer.playLog.push(id);
-      GameBoard.render();
       changePlayer();
     }
+    GameBoard.render();
   }
 
   function changePlayer() {
@@ -85,13 +100,23 @@ const Game = (function() {
   }
 
   function announceWinner(combo, player) {
-    winnerBox.innerText = `${player.marker} is the winner!`
+    winnerBox.style.display = "block"
+    announcement.innerText = `${player.marker} is the winner!`
   }
 
   function endGame() {
     squares.forEach(square => {
       square.removeEventListener("click", playTurn)
     });
+  }
+
+  function restart() {
+    config.player1.playLog = [];
+    config.player2.playLog = [];
+    for (i = 0; i < 9; i++) {
+      GameBoard.board[i] = "";
+    }
+    startGame();
   }
 
   return {startGame}

@@ -9,8 +9,8 @@ const GameBoard = (function() {
       squares[i].innerText = board[i];
     }
   }
-  
-  return {render, board, squares, reset};
+
+  return {render, board, squares};
 })();
 
 const Player = (marker) => {
@@ -43,46 +43,49 @@ const Game = (function() {
 
   function startGame() {
     squares.forEach(square => {
-      square.addEventListener("click", playTurn)
+      square.addEventListener("click", playTurn) //adds listner to each square in grid
     });
     setConfig();
   }
-
-  function playTurn() {
-    makePlay.bind(this)();
-    combo = config.currentPlayer.checkForWinner();
-    if (combo.length == 1) {
-      announceWinner(combo);
-      endGame();
-    }
-    changePlayer();
-  }
-
-  function makePlay() {
-    id = Number(this.id.slice(-1)); //returns id number of square
-    if (GameBoard.board[id] === "") { //prevents play in already taken square
-      GameBoard.board[id] = config.currentPlayer.marker;
-      config.currentPlayer.playLog.push(id);
-    }
-    GameBoard.render();
-  }
-
+  
   function setConfig() {
     player1 = Player("X")
     player2 = Player("O")
     config = {player1, player2, currentPlayer: player1}
   }
 
-  function changePlayer() {
-    if (config.currentPlayer == config.player1) {
-      config.currentPlayer = config.player2
-    } else {
-      config.currentPlayer = config.player1
+  function playTurn() {
+    player = config.currentPlayer; 
+    console.log(player)
+    makePlay.bind(this)(); //binds selected square
+    combo = player.checkForWinner();
+    if (combo.length == 1) {
+      announceWinner(combo, player);//so checkForWinner is run on correct player
+      endGame();
+    }
+  }
+  
+  function makePlay() {
+    //returns id number of square
+    id = Number(this.id.slice(-1));
+    
+    //prevents play in already taken square
+    if (GameBoard.board[id] === "") { 
+      GameBoard.board[id] = config.currentPlayer.marker;
+      config.currentPlayer.playLog.push(id);
+      GameBoard.render();
+      changePlayer();
     }
   }
 
-  function announceWinner(combo) {
-    winnerBox.innerText = `${config.currentPlayer} is the winner!`
+  function changePlayer() {
+      config.currentPlayer == config.player1 ?
+      config.currentPlayer = config.player2 :
+      config.currentPlayer = config.player1;
+  }
+
+  function announceWinner(combo, player) {
+    winnerBox.innerText = `${player.marker} is the winner!`
   }
 
   function endGame() {

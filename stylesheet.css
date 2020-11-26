@@ -33,3 +33,9 @@
 .winner-box {
   display: none;
 }
+.winning-combo {
+  box-shadow: inset 0 0 20px 10px rgba(6, 196, 6, 0.6);
+}
+.cat-game {
+  box-shadow: inset 0 0 20px 10px rgba(196, 6, 6, 0.6);
+}

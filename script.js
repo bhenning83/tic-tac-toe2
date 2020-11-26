@@ -5,8 +5,8 @@ const GameBoard = (function() {
   squares = document.querySelectorAll(".square");
 
   function render() {
-    for (i = 0; i < squares.length; i++) {
-      squares[i].innerText = board[i];
+    for (i = 0; i < playSquares.length; i++) {
+      playSquares[i].innerText = board[i];
     }
   }
 
@@ -35,7 +35,7 @@ const Player = (marker) => {
       }); 
       if (results.length == 3) winner.push(results); //If all three numbers in winning combo are in player's play
     });
-    return winner
+    return winner[0]
   }
 
   return {checkForWinner, playLog, marker}
@@ -44,27 +44,28 @@ const Player = (marker) => {
 
 const Game = (function() {
   config = {};
+  let counter = 0; //tracks plays to check for Cat
 
   //Cache DOM
   winnerBox = document.querySelector(".winner-box");  
   announcement = document.querySelector(".announcement");
   playAgain = document.querySelector(".play-again")
   //Turns HTML collection into array
-  squares = Array.prototype.slice.call( GameBoard.squares );
+  playSquares = Array.prototype.slice.call( GameBoard.squares );
 
   //Bind Events
-  playAgain.addEventListener("click", restart)
+  playAgain.addEventListener("click", _restart)
 
   function startGame() {
-    squares.forEach(square => {
+    playSquares.forEach(square => {
       square.addEventListener("click", playTurn) //adds listner to each square in grid
     });
-    setConfig();
+    _setConfig();
     winnerBox.style.display = "none"
     GameBoard.render();
   }
 
-  function setConfig() {
+  function _setConfig() {
     player1 = Player("X")
     player2 = Player("O")
     config = {player1, player2, currentPlayer: player1}
@@ -72,15 +73,17 @@ const Game = (function() {
 
   function playTurn() {
     player = config.currentPlayer; 
-    makePlay.bind(this)(); //binds selected square
+    _makePlay.bind(this)(); //binds selected square
     combo = player.checkForWinner();
-    if (combo.length == 1) {
-      announceWinner(combo, player);//so checkForWinner is run on correct player
-      endGame();
+    _checkForCat();
+    if (combo) {
+      console.log('here')
+      _announceWinner(combo, player);//so checkForWinner is run on correct player
+      _endGame();
     }
   }
   
-  function makePlay() {
+  function _makePlay() {
     //returns id number of square
     id = Number(this.id.slice(-1));
     
@@ -88,33 +91,59 @@ const Game = (function() {
     if (GameBoard.board[id] === "") { 
       GameBoard.board[id] = config.currentPlayer.marker;
       config.currentPlayer.playLog.push(id);
-      changePlayer();
+      _changePlayer();
+      counter++;
     }
     GameBoard.render();
   }
 
-  function changePlayer() {
+  function _changePlayer() {
       config.currentPlayer == config.player1 ?
       config.currentPlayer = config.player2 :
       config.currentPlayer = config.player1;
   }
 
-  function announceWinner(combo, player) {
-    winnerBox.style.display = "block"
-    announcement.innerText = `${player.marker} is the winner!`
+   //if all plays are made and final play wasn't a winner
+   function _checkForCat() {
+    if ((counter == 9) && (config.currentPlayer.checkForWinner() === undefined)) {
+      _announceCat();
+    }
   }
 
-  function endGame() {
-    squares.forEach(square => {
+  function _announceCat() {
+    GameBoard.squares.forEach(square => {
+      square.classList.add("cat-game")
+    })
+  }
+
+  function _announceWinner(combo, player) {
+    winnerBox.style.display = "block"
+    announcement.innerText = `${player.marker} is the winner!`
+    _showWin(combo)
+  }
+
+  //adds box shadow to winning combo
+  function _showWin(combo) {
+    combo.forEach(i => {
+      GameBoard.squares[i].classList.add("winning-combo")
+    })
+  }
+
+  //prevents further play once someone wins
+  function _endGame() {
+    playSquares.forEach(square => {
       square.removeEventListener("click", playTurn)
     });
   }
 
-  function restart() {
+  function _restart() {
     config.player1.playLog = [];
     config.player2.playLog = [];
+    counter = 0;
     for (i = 0; i < 9; i++) {
       GameBoard.board[i] = "";
+      GameBoard.squares[i].classList.remove("winning-combo") //removes box shadow from winning combo
+      GameBoard.squares[i].classList.remove("cat-game") //removes box shadow from cat game
     }
     startGame();
   }

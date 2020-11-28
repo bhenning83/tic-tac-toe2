@@ -2,7 +2,7 @@ const GameBoard = (function() {
   let board = ["", "", "", "", "", "", "", "", ""];
 
   //Cache DOM
-  squares = document.querySelectorAll(".square");
+  const squares = document.querySelectorAll(".square");
 
   function render() {
     for (i = 0; i < playSquares.length; i++) {
@@ -13,7 +13,8 @@ const GameBoard = (function() {
   return {render, board, squares};
 })();
 
-const Player = (marker) => {
+const Player = (marker, name) => {
+  let playLog = [];
   winning_combos = [
     [0, 1, 2], 
     [3, 4, 5], 
@@ -24,7 +25,6 @@ const Player = (marker) => {
     [0, 4, 8], 
     [2, 4, 6]
   ];
-  let playLog = [];
   
   function checkForWinner() {
     winner = []
@@ -44,31 +44,58 @@ const Player = (marker) => {
 
 const Game = (function() {
   config = {};
+  let p1name = "Player 1";
+  let p2name = "Player 2";
   let counter = 0; //tracks plays to check for Cat
 
   //Cache DOM
-  winnerBox = document.querySelector(".winner-box");  
-  announcement = document.querySelector(".announcement");
-  playAgain = document.querySelector(".play-again")
+  const p1 =           document.querySelector(".p1")
+  const p2 =           document.querySelector(".p2")
+  const form =         document.querySelector("form");
+  const start =        document.querySelector(".start")
+  const playAgain =    document.querySelector(".play-again");
+  const winnerBox =    document.querySelector(".winner-box");  
+  const announcement = document.querySelector(".announcement");
+
   //Turns HTML collection into array
   playSquares = Array.prototype.slice.call( GameBoard.squares );
 
   //Bind Events
-  playAgain.addEventListener("click", _restart)
+  playAgain.addEventListener("click", _restart);
+  form.addEventListener("submit", _setNames);
+  start.addEventListener("click", startGame)
+
 
   function startGame() {
     playSquares.forEach(square => {
       square.addEventListener("click", playTurn) //adds listner to each square in grid
     });
     _setConfig();
-    winnerBox.style.display = "none"
+    _setStartButton();
     GameBoard.render();
   }
 
   function _setConfig() {
-    player1 = Player("X")
-    player2 = Player("O")
-    config = {player1, player2, currentPlayer: player1}
+    player1 = Player("X", p1name);
+    player2 = Player("O", p2name);
+    p1.innerText = p1name;
+    p2.innerText = p2name;
+    config = {player1, player2, currentPlayer: player1};
+  }
+
+  function _setNames(e) {
+    e.preventDefault();
+    p1name = form.p1Name.value || "Player 1";
+    p2name = form.p2Name.value || "Player 2";
+    p1.innerText = p1name;
+    p2.innerText = p1name;
+  }
+
+  function _setStartButton() {
+    start.style.display = "none";
+    winnerBox.style.display = "none";
+    playAgain.style.display = "block";
+    playAgain.innerText = "Reset";
   }
 
   function playTurn() {
@@ -77,7 +104,6 @@ const Game = (function() {
     combo = player.checkForWinner();
     _checkForCat();
     if (combo) {
-      console.log('here')
       _announceWinner(combo, player);//so checkForWinner is run on correct player
       _endGame();
     }
@@ -106,20 +132,22 @@ const Game = (function() {
    //if all plays are made and final play wasn't a winner
    function _checkForCat() {
     if ((counter == 9) && (config.currentPlayer.checkForWinner() === undefined)) {
+      _endGame();
       _announceCat();
     }
   }
 
   function _announceCat() {
     GameBoard.squares.forEach(square => {
-      square.classList.add("cat-game")
+      square.classList.add("cat-game");
     })
   }
 
   function _announceWinner(combo, player) {
-    winnerBox.style.display = "block"
-    announcement.innerText = `${player.marker} is the winner!`
-    _showWin(combo)
+    winnerBox.style.display = "flex";
+    playAgain.innerText = "Play Again?"
+    announcement.innerText = `${player.marker} is the winner!`;
+    _showWin(combo);
   }
 
   //adds box shadow to winning combo
@@ -150,5 +178,3 @@ const Game = (function() {
 
   return {startGame}
 })();
-
-Game.startGame();

@@ -1,6 +1,13 @@
-.test {
-  color: blue;
-  text-transform: capitalize;
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.name-wrap {
+  width: 75%;
+  display: flex;
+  justify-content: space-between;
 }
 .square {
   width: 100px;
@@ -21,6 +28,7 @@
   display: flex;
   width: 305px;
   flex-wrap: wrap;
+  margin: 50px 0;
 }
 #square-1, #square-4, #square-7 {
   border-left: 1px solid black;
@@ -32,10 +40,16 @@
 }
 .winner-box {
   display: none;
+  align-items: center;
+  flex-direction: column;
+  width: 40rem;
 }
 .winning-combo {
   box-shadow: inset 0 0 20px 10px rgba(6, 196, 6, 0.6);
 }
 .cat-game {
   box-shadow: inset 0 0 20px 10px rgba(196, 6, 6, 0.6);
+}
+.play-again {
+  display: none
 }

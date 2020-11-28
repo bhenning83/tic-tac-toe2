@@ -38,17 +38,14 @@ body {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
 }
-.winner-box {
+.announcement {
   display: none;
-  align-items: center;
-  flex-direction: column;
-  width: 40rem;
-}
-.winning-combo {
-  box-shadow: inset 0 0 20px 10px rgba(6, 196, 6, 0.6);
 }
 .cat-game {
   box-shadow: inset 0 0 20px 10px rgba(196, 6, 6, 0.6);
+}
+.winning-combo {
+  box-shadow: inset 0 0 20px 10px rgba(6, 196, 6, 0.6);
 }
 .play-again {
   display: none

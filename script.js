@@ -54,8 +54,7 @@ const Game = (function() {
   const form =         document.querySelector("form");
   const start =        document.querySelector(".start")
   const playAgain =    document.querySelector(".play-again");
-  const winnerBox =    document.querySelector(".winner-box");  
-  const announcement = document.querySelector(".announcement");
+  const announcement =  document.querySelector(".announcement");  
 
   //Turns HTML collection into array
   playSquares = Array.prototype.slice.call( GameBoard.squares );
@@ -93,7 +92,7 @@ const Game = (function() {
 
   function _setStartButton() {
     start.style.display = "none";
-    winnerBox.style.display = "none";
+   announcement.style.display = "none";
     playAgain.style.display = "block";
     playAgain.innerText = "Reset";
   }
@@ -102,7 +101,7 @@ const Game = (function() {
     player = config.currentPlayer; 
     _makePlay.bind(this)(); //binds selected square
     combo = player.checkForWinner();
-    _checkForCat();
+    _checkForCat(combo);
     if (combo) {
       _announceWinner(combo, player);//so checkForWinner is run on correct player
       _endGame();
@@ -130,8 +129,8 @@ const Game = (function() {
   }
 
    //if all plays are made and final play wasn't a winner
-   function _checkForCat() {
-    if ((counter == 9) && (config.currentPlayer.checkForWinner() === undefined)) {
+   function _checkForCat(combo) {
+    if ((counter == 9) && (combo == undefined)) {
       _endGame();
       _announceCat();
     }
@@ -141,11 +140,14 @@ const Game = (function() {
     GameBoard.squares.forEach(square => {
       square.classList.add("cat-game");
     })
+    playAgain.innerText = "Play Again?";
+    announcement.style.display = "block";
+    announcement.innerText = "Cat game. Meow.";
   }
 
   function _announceWinner(combo, player) {
-    winnerBox.style.display = "flex";
-    playAgain.innerText = "Play Again?"
+    playAgain.innerText = "Play Again?";
+    announcement.style.display = "block";
     announcement.innerText = `${player.marker} is the winner!`;
     _showWin(combo);
   }

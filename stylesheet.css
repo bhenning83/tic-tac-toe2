@@ -4,11 +4,6 @@ body {
   align-items: center;
   width: 100%;
 }
-.name-wrap {
-  width: 75%;
-  display: flex;
-  justify-content: space-between;
-}
 .square {
   width: 100px;
   height: 100px;

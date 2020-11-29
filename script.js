@@ -68,9 +68,12 @@ const Game = (function() {
   playSquares = Array.prototype.slice.call( GameBoard.squares );
 
   //Bind Events
-  form.addEventListener("submit", _setConfig);
   start.addEventListener("click", startGame)
   playAgain.addEventListener("click", _restart);
+  form.addEventListener("submit", (e) => {
+    if (counter == 0) _setConfig(e);
+    if (counter > 0) _setNames(e);
+  });
 
 
   function startGame() {
@@ -83,14 +86,19 @@ const Game = (function() {
 
   function _setConfig(e) {
     e.preventDefault();
-    p1name = form.p1Name.value || "Player 1";
-    p2name = form.p2Name.value || "Player 2";
-    p1.innerText = p1name;
-    p2.innerText = p2name;
-    player1 = Player("X", p1name);
-    player2 = Player("O", p2name);
+    player1 = Player("X", "");
+    player2 = Player("O", "");
     config = {player1, player2, currentPlayer: player1};
-    if (counter == 0 ) start.style.display = "block";
+    _setNames(e);
+    start.style.display = "block";
+  }
+
+  function _setNames(e) {
+    e.preventDefault();
+    config.player1.name = form.p1Name.value || "Player 1";
+    config.player2.name = form.p2Name.value || "Player 2";
+    p1.innerText = config.player1.name;
+    p2.innerText = config.player2.name;
   }
 
   function _setStartButton() {

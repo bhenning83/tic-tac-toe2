@@ -47,6 +47,9 @@ body {
 .winning-combo {
   box-shadow: inset 0 0 20px 10px rgba(6, 196, 6, 0.6);
 }
+.start {
+  display: none;
+}
 .play-again {
-  display: none
+  display: none;
 }

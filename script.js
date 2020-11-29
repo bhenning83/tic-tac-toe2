@@ -38,7 +38,15 @@ const Player = (marker, name) => {
     return winner[0]
   }
 
-  return {checkForWinner, playLog, marker}
+  function addPlay(id) {
+    playLog.push(id);
+  }
+
+  function reset() {
+    playLog = [];
+  }
+
+  return {name, checkForWinner, addPlay, marker, reset}
 };
 
 
@@ -60,34 +68,29 @@ const Game = (function() {
   playSquares = Array.prototype.slice.call( GameBoard.squares );
 
   //Bind Events
-  playAgain.addEventListener("click", _restart);
-  form.addEventListener("submit", _setNames);
+  form.addEventListener("submit", _setConfig);
   start.addEventListener("click", startGame)
+  playAgain.addEventListener("click", _restart);
 
 
   function startGame() {
     playSquares.forEach(square => {
       square.addEventListener("click", playTurn) //adds listner to each square in grid
     });
-    _setConfig();
     _setStartButton();
     GameBoard.render();
   }
 
-  function _setConfig() {
-    player1 = Player("X", p1name);
-    player2 = Player("O", p2name);
-    p1.innerText = p1name;
-    p2.innerText = p2name;
-    config = {player1, player2, currentPlayer: player1};
-  }
-
-  function _setNames(e) {
+  function _setConfig(e) {
     e.preventDefault();
     p1name = form.p1Name.value || "Player 1";
     p2name = form.p2Name.value || "Player 2";
     p1.innerText = p1name;
-    p2.innerText = p1name;
+    p2.innerText = p2name;
+    player1 = Player("X", p1name);
+    player2 = Player("O", p2name);
+    config = {player1, player2, currentPlayer: player1};
+    if (counter == 0 ) start.style.display = "block";
   }
 
   function _setStartButton() {
@@ -115,7 +118,7 @@ const Game = (function() {
     //prevents play in already taken square
     if (GameBoard.board[id] === "") { 
       GameBoard.board[id] = config.currentPlayer.marker;
-      config.currentPlayer.playLog.push(id);
+      config.currentPlayer.addPlay(id);
       _changePlayer();
       counter++;
     }
@@ -148,7 +151,7 @@ const Game = (function() {
   function _announceWinner(combo, player) {
     playAgain.innerText = "Play Again?";
     announcement.style.display = "block";
-    announcement.innerText = `${player.marker} is the winner!`;
+    announcement.innerText = `${player.name} is the winner!`;
     _showWin(combo);
   }
 
@@ -167,8 +170,8 @@ const Game = (function() {
   }
 
   function _restart() {
-    config.player1.playLog = [];
-    config.player2.playLog = [];
+    config.player1.reset();
+    config.player2.reset();
     counter = 0;
     for (i = 0; i < 9; i++) {
       GameBoard.board[i] = "";
@@ -177,6 +180,4 @@ const Game = (function() {
     }
     startGame();
   }
-
-  return {startGame}
 })();

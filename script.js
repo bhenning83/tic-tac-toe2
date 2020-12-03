@@ -85,6 +85,7 @@ const Game = (function() {
       square.classList.add("active");
     });
     _setStartButton();
+    _highlightPlayer();
     GameBoard.render();
   }
 
@@ -138,10 +139,21 @@ const Game = (function() {
     GameBoard.render();
   }
 
+  function _highlightPlayer() {
+    if (config.currentPlayer == config.player1) {
+      p1.style.fontWeight = "700";
+      p2.style.fontWeight = "400";
+    } else {
+      p2.style.fontWeight = "700";
+      p1.style.fontWeight = "400";
+    }
+  }
+
   function _changePlayer() {
       config.currentPlayer == config.player1 ?
       config.currentPlayer = config.player2 :
       config.currentPlayer = config.player1;
+      _highlightPlayer();
   }
 
    //if all plays are made and final play wasn't a winner

@@ -1,4 +1,3 @@
-
 :root {
   --tan-crayola: hsla(24, 69%, 67%, 1);
   --sinopia: hsla(18, 58%, 46%, 1);
@@ -7,7 +6,9 @@
   --white: hsla(0, 0%, 100%, 1);
   
 }
- 
+.container {
+  height: 100vh;
+}
  .square {
   width: 100px;
   height: 100px;
@@ -15,11 +16,13 @@
   justify-content: center;
   align-items: center;
   font-size: 5rem;
-  background: lightblue;
-  border: 1px solid black;
 }
 .active:hover {
   cursor: pointer;
+}
+.board-wrap {
+  position: absolute;
+  bottom: 0;
 }
 #board-container {
   list-style: none;

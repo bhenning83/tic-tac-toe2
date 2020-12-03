@@ -1,10 +1,20 @@
+
+:root {
+  --tan-crayola: hsla(24, 69%, 67%, 1);
+  --sinopia: hsla(18, 58%, 46%, 1);
+  --rich-black-fogra-39: hsla(0, 0%, 5%, 1);
+  --medium-aquamarine: hsla(148, 62%, 64%, 1);
+  --white: hsla(0, 0%, 100%, 1);
+  
+}
+ 
  .square {
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 8rem;
+  font-size: 5rem;
   background: lightblue;
   border: 1px solid black;
 }
@@ -16,6 +26,7 @@
   display: flex;
   flex-wrap: wrap;
   margin: 50px 0;
+  width: 305px;
 }
 #square-1, #square-4, #square-7 {
   border-left: 1px solid lightgray;

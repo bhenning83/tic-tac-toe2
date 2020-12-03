@@ -5,18 +5,15 @@
   justify-content: center;
   align-items: center;
   font-size: 8rem;
+  background: lightblue;
+  border: 1px solid black;
 }
 .active:hover {
   cursor: pointer;
 }
-.board-wrap {
-  display: flex;
-  justify-content: center;
-}
 #board-container {
   list-style: none;
   display: flex;
-  width: 455px;
   flex-wrap: wrap;
   margin: 50px 0;
 }

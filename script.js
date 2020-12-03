@@ -5,8 +5,8 @@ const GameBoard = (function() {
   const squares = document.querySelectorAll(".square");
 
   function render() {
-    for (i = 0; i < playSquares.length; i++) {
-      playSquares[i].innerText = board[i];
+    for (i = 0; i < squares.length; i++) {
+      squares[i].innerText = board[i];
     }
   }
 
@@ -62,7 +62,7 @@ const Game = (function() {
   const form =         document.querySelector("form");
   const start =        document.querySelector(".start")
   const playAgain =    document.querySelector(".play-again");
-  const announcement =  document.querySelector(".announcement");  
+  const announcement = document.querySelector(".announcement");  
 
   //Turns HTML collection into array
   playSquares = Array.prototype.slice.call( GameBoard.squares );
@@ -71,14 +71,18 @@ const Game = (function() {
   start.addEventListener("click", startGame)
   playAgain.addEventListener("click", _restart);
   form.addEventListener("submit", (e) => {
-    if (counter == 0) _setConfig(e);
-    if (counter > 0) _setNames(e);
+    if (Object.keys(config).length === 0) {
+      _setConfig(e); //if starting  a new game
+    } else {
+      _setNames(e); //if updating names during a game
+    }
   });
-
 
   function startGame() {
     playSquares.forEach(square => {
       square.addEventListener("click", playTurn) //adds listner to each square in grid
+      square.style.borderColor = "black";
+      square.classList.add("active");
     });
     _setStartButton();
     GameBoard.render();
@@ -95,6 +99,7 @@ const Game = (function() {
 
   function _setNames(e) {
     e.preventDefault();
+    console.log(config)
     config.player1.name = form.p1Name.value || "Player 1";
     config.player2.name = form.p2Name.value || "Player 2";
     p1.innerText = config.player1.name;
@@ -103,7 +108,7 @@ const Game = (function() {
 
   function _setStartButton() {
     start.style.display = "none";
-   announcement.style.display = "none";
+    announcement.style.display = "none";
     playAgain.style.display = "block";
     playAgain.innerText = "Reset";
   }

@@ -9,36 +9,47 @@
   <title>Tic-Tac-Toe2</title>
 </head>
 <body>
-<h1>Ticky-Tacky-Toe</h1>
-  <form id="player-names d-flex">
-    <div class="form-group">
-      <label for="p1-name">Enter Player 1:</label>
-      <input type="text" class="form-control" id="p1Name" value="" placeholder="Player 1">
+  <div class="page-wrap container">
+    <div class="row d-flex justify-content-center start-box">
+      <h1 class="col-12 text-center" >Ticky-Tacky-Toe</h1>
+      <form class="form-inline px-5">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Player 1:</span>
+          </div>
+          <input type="text" class="form-control" id="p1Name">
+        </div>
+        <div class="input-group mx-lg-3 my-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Player 2:</span>
+          </div>
+          <input type="text" class="form-control" id="p2Name">
+        </div>
+        <button type="submit">Submit</button>
+      </form>
     </div>
-    <div class="form-group">
-      <label for="p2-name">Enter Player 2:</label>
-      <input type="text" class="form-control" id="p2Name" value="" placeholder="Player 2">
+    <div class="row">
+      <div class="p1 col-4 text-center"></div>
+      <button class="start mx-auto col-4">Start Game</button>
+      <button class="play-again mx-auto col-4"></button>
+      <div class="p2 col-4 text-center"></div>
     </div>
-    <button type="submit">Submit</button>
-  </form>
-  <div class="p1"></div>
-  <div class="p2"></div>
-  <button class="start">Start Game</button>
-  <button class="play-again"></button>
-  <h2 class="announcement"></h2>
-  <div class="board-wrap">
-    <ul id="board-container">
-      <li class="square" id="square-0"></li>
-      <li class="square" id="square-1"></li>
-      <li class="square" id="square-2"></li>
-      <li class="square" id="square-3"></li>
-      <li class="square" id="square-4"></li>
-      <li class="square" id="square-5"></li>
-      <li class="square" id="square-6"></li>
-      <li class="square" id="square-7"></li>
-      <li class="square" id="square-8"></li>
-    </ul>
+      <h2 class="announcement"></h2>
+      <div class="board-wrap">
+        <ul id="board-container">
+          <li class="square" id="square-0"></li>
+          <li class="square" id="square-1"></li>
+          <li class="square" id="square-2"></li>
+          <li class="square" id="square-3"></li>
+          <li class="square" id="square-4"></li>
+          <li class="square" id="square-5"></li>
+          <li class="square" id="square-6"></li>
+          <li class="square" id="square-7"></li>
+          <li class="square" id="square-8"></li>
+        </ul>
+      </div>
   </div>
+ 
  
   
   
